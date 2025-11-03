@@ -3040,6 +3040,67 @@ public class Hangman {
             String input = scanner.nextLine();
          
 
+            if (input.equals("quit")) {
+            System.out.println("Bye!!!!");
+            break;
+            } 
+
+            if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
+            System.out.println("Please enter a single letter.\n");
+            continue;
+            }
+
+            char guess = Character.toLowerCase(input.charAt(0));
+
+
+            if (guessedLetters.contains(input.charAt(0))) {
+            System.out.println("You've already guessed that letter. Try again.\n");
+            continue;
+            }
+            
+
+            guessedLetters.add(guess);
+            if (secretWord.contains(String.valueOf(guess))) {
+            System.out.println("Yes, that's right!\n");
+            } else {
+            System.out.println("No, that's incorrect.\n");
+            wrongGuesses++;
+            } 
+
+
+            displayWord = getDisplayWord(secretWord, guessedLetters);
+            if (!displayWord.contains("_")) {
+            System.out.println("Your guess was correct! You win! :)");
+            System.out.println("The word was: " + secretWord);
+            break;
+            }
+
+
+            if (wrongGuesses >= maxWrongGuesses) {
+            System.out.println("Too many wrong guesses! You loose. :(\n");
+            System.out.println("The word was: " + secretWord);
+            break;
+            }
+
+
         }
+        scanner.close();
+
     }
+    
+
+    private static String getDisplayWord(String secretWord, Set<Character> guessedLetters) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : secretWord.toCharArray()) {
+        if (guessedLetters.contains(c)) {
+            sb.append(c).append(' ');
+        } else {
+            sb.append("_ ");
+        }
+        
+    }
+    return sb.toString().trim();
+    
+}
+
 }
